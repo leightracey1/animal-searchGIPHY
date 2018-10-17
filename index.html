@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gif tastic </title>
+
+    <link href="https://fonts.googleapis.com/css?family=Kodchasan" rel="stylesheet">
+<style>
+
+    * {
+        font-family: 'Kodchasan', sans-serif;
+        background-image: url("ep_naturalwhite.png");
+        
+    }
+
+.ourImages { 
+
+height: 200px;
+margin-left: 0%;
+width: 200px;
+float: left;
+}
+
+
+.ourRating {
+    float: left;
+}
+
+</style>
+
+
+
+</head>
+<body>
+
+<div class ="container"> 
+<h1> Gif Search </h1>
+
+<!-- buttons get dumped here  -->
+<div id="buttons-view"></div>
+<!-- form for button creation  -->
+<form id="animal-form">
+<label for ="animal-input">Search for an animal</label>
+<input type ="text" id="animal-input"> 
+
+<input id= "add-animal" type="submit" value="add an animal"> 
+</form>
+
+<!-- ANIMALS GET DUMPED HERE  -->
+<div id = "put-animals"> </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+var animalsArray = ["dog", "cat", "mouse"]
+
+function animalDisplay () { 
+
+    $("#put-animals").empty()
+
+// var animalChoice = "dog";
+
+var animalChoice = $(this).attr("data-name");
+"https://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ animalChoice + "&limit=10&api_key=xYidXrSI054V8sLN8gcRiDb0lPtsQUcK";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+
+    }).then(function(response) {
+      console.log(response);
+    var results = response.data;
+
+    for (var i = 0; i < results.length; i++) {
+
+      var something = $("<img>")
+      something.addClass("ourImages")
+      something.attr("src", response.data[i].images.fixed_height_still.url)
+
+      var rating =$("<div>")
+      rating.text("rating: " + response.data[i].rating)
+      rating.addClass("ourRating")
+
+      $("#put-animals").prepend(something)
+      $("#put-animals").prepend(rating)
+
+
+      $(".ourImages").on("click", function () {
+        
+        something.attr("src", response.data[i].images.original.url); 
+     
+
+      })
+      
+    }
+
+    });
+
+}
+
+function renderButtons () { 
+$("#buttons-view").empty(); 
+
+ for (var i = 0; i < animalsArray.length; i++) {
+
+// Then dynamicaly generates buttons for each movie in the array
+// This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+var a = $("<button>");
+// Adds a class of movie to our button
+a.addClass("animal");
+// Added a data-attribute
+a.attr("data-name", animalsArray[i]);
+// Provided the initial button text
+a.text(animalsArray[i]);
+// Added the button to the buttons-view div
+$("#buttons-view").append(a);
+}
+}
+
+$("#add-animal").on("click", function(event){ 
+event.preventDefault(); 
+
+var animalChoice = $("#animal-input").val(). trim() 
+
+animalsArray.push(animalChoice)
+
+renderButtons()
+
+}) 
+
+$(document).on("click", ".animal", animalDisplay); 
+
+
+renderButtons()
+
+
+ </script>
+</div>
+
+
+    
+</body>
+</html>
