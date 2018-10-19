@@ -90,7 +90,6 @@ renderButtons()
 $(document).on("click", ".animal", animalDisplay); 
 
 $(document).on("click", ".gif", function(){
-        console.log(this);
 
         var currentState = $(this).attr("data-state");
     
